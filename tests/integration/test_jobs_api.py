@@ -2,10 +2,11 @@ import pytest
 
 import json
 from labelmanager import db
-from app.models.job import Job
+from app.models.job import Job, JobSchema
 from app.models.image import Image
 from http import HTTPStatus
-
+import datetime
+import time
 
 @pytest.fixture
 def http_headers():
@@ -69,6 +70,7 @@ def test_post_creates_new_job(db_client, database, http_headers):
     assert saved_job["id"] is not None
     assert saved_job["name"] == jobname
     assert saved_job["created_on"] is not None
+    assert saved_job["last_updated_on"] is not None
     newjob = Job.query.filter_by(name=jobname).first()
     assert newjob is not None
 
@@ -108,17 +110,25 @@ def test_delete_when_job_does_not_exist(db_client, database):
     json_data["data"] == None
 
 
-def test_update(db_client, database, http_headers):
+def test_put_updates_job_record(db_client, database, http_headers):
     jobname = "update me"
 
     # save job in db
-    job_dict = {'name': jobname}
-    job = Job(job_dict)
+    job = Job()
+    job.name = jobname
+    job.created_on = datetime.datetime.utcnow()
+    job.last_updated_on = datetime.datetime.utcnow()
     database.session.add(job)
     database.session.commit()
     job = Job.query.filter_by(name=jobname).first()
-    id = job.id
     assert job is not None
+    id = job.id
+
+    schema = JobSchema()
+    job_data = schema.dump(job).data
+    first_update_time = job.last_updated_on
+
+    time.sleep(2)
 
     newname = "job has a new name"
     body = json.dumps({'id': job.id, 'name': newname})
@@ -129,6 +139,10 @@ def test_update(db_client, database, http_headers):
     updated_job = json_data['data']
     assert updated_job["id"] == id
     assert updated_job["name"] == newname
+    assert updated_job["created_on"] is not None
+    assert updated_job["last_updated_on"] is not None
 
+    # make sure last_updated_time is updated from when record was created
     saved_job = Job.query.get(id)
-    assert saved_job.name == newname
+    next_update_time = saved_job.last_updated_on
+    assert next_update_time > first_update_time

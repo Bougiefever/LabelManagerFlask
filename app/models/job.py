@@ -36,7 +36,6 @@ class Job(db.Model):
         self.query.filter_by(id=id).update(job_dict)
         job = self.query.get(id)
         job.last_updated_on = datetime.utcnow()
-        print(job.id, job.name, job.last_updated_on)
 
         db.session.commit()
         job = self.query.get(id)

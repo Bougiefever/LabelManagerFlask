@@ -48,12 +48,10 @@ class JobAPI(MethodView):
 
     def post(self):
         """ create a new job """
-        print("create")
         json_data = request.get_json()
         job = Job(json_data)
 
         job = job.create(job)
-        print('in post', job.created_on)
         job_data = job_schema.dump(job).data
         body = jsonify({
                         "ok": True,
@@ -66,7 +64,6 @@ class JobAPI(MethodView):
         """ delete a single job """
 
         try:
-            print('job to delete', id)
             jobs.delete(id)
             body = jsonify({
                                 "ok": True,
@@ -75,7 +72,6 @@ class JobAPI(MethodView):
                     })
             return make_response(body, HTTPStatus.ACCEPTED, headers)
         except Exception as e:
-            print('exception', e)
             body = jsonify({
                                 "ok": False,
                                 "message": "job does not exist or could not be deleted",
@@ -88,7 +84,6 @@ class JobAPI(MethodView):
         json_data = request.get_json()
 
         job = jobs.update(json_data)
-        print('job dates', job.created_on, job.last_updated_on)
         job_data = job_schema.dump(job).data
         body = jsonify({
                                 "ok": True,

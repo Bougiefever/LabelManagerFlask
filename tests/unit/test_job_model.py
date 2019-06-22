@@ -7,7 +7,6 @@ def test_schema_validation_successful():
     job = Job()
     job.name = "test name"
     job_schema = JobSchema()
-    print('job data', job_schema.dump(job).data)
 
 
 def test_create_job_from_dict():

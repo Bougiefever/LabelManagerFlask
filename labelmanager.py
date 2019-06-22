@@ -14,6 +14,14 @@ if os.path.exists(dotenv_path):
     load_dotenv(dotenv_path)
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
+
+# ensure the instance folder exists
+# try:
+#     os.makedirs(app.instance_path)
+# except OSError:
+#     pass
+
+
 migrate = Migrate(app, db)
 
 
