@@ -1,6 +1,6 @@
 import pytest
-from app import db
-from app.models.job import Job, JobSchema
+from src import db
+from src.models.job import Job, JobSchema
 
 
 def test_schema_validation_successful():

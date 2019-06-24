@@ -3,9 +3,9 @@ from dotenv import load_dotenv
 import sys
 import click
 from flask_migrate import Migrate, upgrade
-from app import create_app, db
-from app.models.image import Image
-from app.models.job import Job
+from src import create_app, db
+from src.models.image import Image
+from src.models.job import Job
 import config
 from config import config_list
 

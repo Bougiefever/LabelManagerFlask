@@ -2,8 +2,8 @@ import pytest
 
 import json
 from labelmanager import db
-from app.models.job import Job, JobSchema
-from app.models.image import Image
+from src.models.job import Job, JobSchema
+from src.models.image import Image
 from http import HTTPStatus
 import datetime
 import time

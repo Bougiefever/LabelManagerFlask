@@ -2,7 +2,7 @@ from flask import Blueprint, request, make_response, jsonify
 from flask.views import MethodView
 from http import HTTPStatus
 from ...models.image import Image
-from app.models.job import Job, JobSchema
+from ...models.job import Job, JobSchema
 import json
 from . import bp
 
