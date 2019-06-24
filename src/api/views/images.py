@@ -1,14 +1,14 @@
 from flask import Blueprint, request, make_response, jsonify
 from flask.views import MethodView
 from http import HTTPStatus
-from ...models.image import Image
-from ...models.job import Job,
+from ...models.image import Image, ImageSchema
+from ...models.job import Job
 import json
 
 headers = {'Content-Type': 'application/json'}
-jobs = Job()
-job_schema = JobSchema()
-jobs_schema = JobSchema(many=True)
+images = Image()
+image_schema = ImageSchema() # one image item
+images_schema = ImageSchema(many=True) # list of images
 
 
 class ImageAPI(MethodView):

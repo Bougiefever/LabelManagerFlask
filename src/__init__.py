@@ -17,6 +17,7 @@ def create_app(config_name):
 
     bootstrap.init_app(app)
     db.init_app(app)
+
     ma.init_app(app)
 
     from . import main, api

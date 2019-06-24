@@ -2,9 +2,20 @@ import pytest
 from app import create_app, db
 
 
+@pytest.fixture(autouse=True)
+def set_test_env_vars(monkeypatch):
+    monkeypatch.setenv('TEST_SECRET_KEY', 'test')
+    monkeypatch.setenv("DEBUGGING_VERBOSITY", "4")
+    # connection to SQLExpress
+    connection_string = r'DRIVER={ODBC Driver 13 for SQL Server};' + "SERVER={0};DATABASE={1};UID={2};PWD={3}".format('.\SQLEXPRESS', 'labelmanagertestdb', 'testuser', 'Volunteer2019')
+    monkeypatch.setenv('SQLALCHEMY_DATABASE_URI', connection_string) 
+
+
 @pytest.fixture
 def app():
     """Create and configure a new app instance for each test."""
+    print('creating app with test vars')
+
     app = create_app('test')
     app.testing = True
 

@@ -8,11 +8,13 @@ from src.models.image import Image
 from src.models.job import Job
 import config
 from config import config_list
+from flask.cli import with_appcontext
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
 if os.path.exists(dotenv_path):
     load_dotenv(dotenv_path)
 
+#print(os.getenv('FLASK_CONFIG'))
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 
 # ensure the instance folder exists
@@ -21,6 +23,11 @@ app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 # except OSError:
 #     pass
 
+# ctx = app.app_context()
+# ctx.push()
+# eng = db.get_engine()
+# url = eng.url
+# ctx.pop()
 
 migrate = Migrate(app, db)
 
@@ -29,3 +36,12 @@ migrate = Migrate(app, db)
 def make_shell_context():
     return dict(db=db, Job=Job, Image=Image)
 
+
+@app.cli.command()
+@with_appcontext
+def resetdatabase():
+    st = "using config settings: {}".format(os.getenv('FLASK_CONFIG') or 'default')
+    click.echo(st)
+    db.drop_all()
+    db.create_all()
+    click.echo("database was reset")

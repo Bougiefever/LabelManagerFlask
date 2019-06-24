@@ -8,8 +8,8 @@ from . import bp
 
 headers = {'Content-Type': 'application/json'}
 jobs = Job()
-job_schema = JobSchema()
-jobs_schema = JobSchema(many=True)
+job_schema = JobSchema() # one job item
+jobs_schema = JobSchema(many=True) # list of jobs
 
 
 class JobAPI(MethodView):

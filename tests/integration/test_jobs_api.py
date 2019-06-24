@@ -7,6 +7,7 @@ from http import HTTPStatus
 import datetime
 import time
 
+
 @pytest.fixture
 def http_headers():
     return {'Content-Type': 'application/json'}
@@ -16,6 +17,12 @@ def http_headers():
 def test_jobs_endpoint(db_client):
     response = db_client.get('/api/jobs/1')
     assert response is not None
+
+
+def test_database_connection_does_not_contain_None(db_client, database):
+    eng = database.get_engine()
+    db_connection = str(eng.url.query['odbc_connect'])
+    assert 'None' not in db_connection
 
 
 def test_get_one_returns_404_when_job_not_exists(db_client):

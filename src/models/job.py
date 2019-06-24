@@ -22,7 +22,10 @@ class Job(db.Model):
     images = db.relationship('Image', backref='job', lazy='select')
 
     def create(self, job):
+        eng = db.get_engine()
+        url = eng.url.query['odbc_connect']
         job.created_on = datetime.utcnow()
+        print(url)
         job.last_updated_on = datetime.utcnow()
         db.session.add(job)
         db.session.commit()
