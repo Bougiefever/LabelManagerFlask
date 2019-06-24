@@ -23,12 +23,6 @@ app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 # except OSError:
 #     pass
 
-# ctx = app.app_context()
-# ctx.push()
-# eng = db.get_engine()
-# url = eng.url
-# ctx.pop()
-
 migrate = Migrate(app, db)
 
 
