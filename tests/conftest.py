@@ -1,5 +1,5 @@
 import pytest
-from labelmanager import create_app, db
+from app import create_app, db
 
 
 @pytest.fixture

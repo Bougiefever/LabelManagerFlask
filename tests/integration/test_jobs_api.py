@@ -1,7 +1,6 @@
 import pytest
 
 import json
-from labelmanager import db
 from src.models.job import Job, JobSchema
 from src.models.image import Image
 from http import HTTPStatus
